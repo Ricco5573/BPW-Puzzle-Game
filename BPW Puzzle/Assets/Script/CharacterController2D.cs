@@ -33,6 +33,10 @@ public class CharacterController2D : MonoBehaviour
         {
             SpawnObject();
         }
+        if(Input.GetKeyDown(KeyCode.D))
+        {
+            startAt = playerData.Count;
+        }
         if (Input.GetKeyDown(KeyCode.R)) {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
@@ -56,7 +60,7 @@ public class CharacterController2D : MonoBehaviour
         movement = transform.up * vertical;
 
         // Normalize the movement vector and make it proportional to the speed per second
-        movement = movement.normalized * (speed * Time.deltaTime);
+        movement = movement * speed * Time.deltaTime;
 
         // Move the player
         rigidbody2D.MovePosition(transform.position + movement);
@@ -64,6 +68,7 @@ public class CharacterController2D : MonoBehaviour
 
     void TrackPlayer()
     {
+        //Creates a new Data point for the playerData struct, that will later be send to the Clones.
         PlayerData data = new PlayerData(transform.position, transform.eulerAngles.z, Time.time);
         playerData.Add(data);
 
@@ -72,6 +77,7 @@ public class CharacterController2D : MonoBehaviour
     void SpawnObject()
     {
         //so turns out, This method runs the code BEFORE START(). Which is interesting, but by god its annoying
+        //Creates a clone, and sends all the accumulated playerData to it, as well as an int for it to know where in the struct to start
         GameObject newObject = Instantiate(spawnObject, new Vector2(0,0), Quaternion.identity);
         newObject.SendMessage("ReceiveData", new PlayerData(playerData));
         newObject.SendMessage("Setstart", startAt);
@@ -81,18 +87,19 @@ public class CharacterController2D : MonoBehaviour
         {
            clone.SendMessage("Reset", null, SendMessageOptions.DontRequireReceiver);
         }
+        //Sets start int so that the next clone will start when you summoned the last one.
         startAt = playerData.Count;
         
     }
 }
 
 
-
+//This struct keeps track of the player position and rotation, and inside of it has a list of itself to keep track of the data
+// of every frame.
 public struct PlayerData
 {
     public Vector2 position;
     public float rotation;
-    public float time;
 
     public List<PlayerData> pD;
 
@@ -100,7 +107,6 @@ public struct PlayerData
     {
         this.position = position;
         this.rotation = rotation;
-        this.time = time;
         this.pD = new List<PlayerData>();
 
     }
@@ -109,7 +115,6 @@ public struct PlayerData
     {
         this.position = Vector2.zero;
         this.rotation = 0.0f;
-        this.time = 0.0f;
         this.pD = playerData;
 
     }

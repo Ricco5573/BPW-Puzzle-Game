@@ -26,19 +26,17 @@ public class AIFollower : MonoBehaviour
     }
     void ReceiveData(PlayerData data)
     {
+        //On spawn, the clone will receive the playerdata containing movement and rotation, along with the start location
         playerData = data.pD;
 
-      
+        //Because a struct is a reference, we need to define the end of this clones playtime as well. Which we do here
+        //by getting the current length of the list, meaning that it will end when the player pressed the button to reset time.
         length = playerData.Count;
     }
-    void Setstart(int startAt)
-    {
-        start = startAt;
-        counter = start;
 
-    }
     void Reset()
     {
+        //This function will reset the clone back to its starting position, restarting its movement
         counter = start;
         iDCounter = 0;
         sprite.enabled = true;
@@ -49,6 +47,8 @@ public class AIFollower : MonoBehaviour
 
     void Update()
     {
+        //Here, it runs through one piece of the playerdata list each frame. Updating its position and rotation to be the same
+        //as that of the data. Simulating movement.
         if (counter <= length)
         {
 
@@ -60,6 +60,7 @@ public class AIFollower : MonoBehaviour
         }
         if (counter >= length)
         {
+            //when it reaches the end of the list, it will disable itself, to simulate resetting time.
             sprite.enabled = false;
             box.enabled = false;
             diamond.enabled = false;
@@ -70,6 +71,7 @@ public class AIFollower : MonoBehaviour
     {
         if(collision.gameObject.tag == "Player")
         {
+            //If the clone spots the player, that will create a time paradox, and restart the level
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
