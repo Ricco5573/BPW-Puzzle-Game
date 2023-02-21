@@ -55,12 +55,6 @@ public class AIFollower : MonoBehaviour
             PlayerData currentData = playerData[counter];
             transform.position = currentData.position;
             transform.eulerAngles = new Vector3(0, 0, currentData.rotation);
-
-
-            // Do something here to simulate the interaction event
-            // Debug.Log("Interacted with object at position " + currentData.position + " and rotation " + currentData.rotation);
-
-
             counter++;
 
         }

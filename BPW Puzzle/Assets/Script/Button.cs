@@ -5,10 +5,13 @@ using UnityEngine;
 public class Button : MonoBehaviour
 {
     private bool isActive;
+    private SpriteRenderer sR;
+    private Animator animator;
     // Start is called before the first frame update
     void Start()
     {
-        
+        sR = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -25,8 +28,10 @@ public class Button : MonoBehaviour
     private IEnumerator Timer()
     {
         isActive = true;
+        animator.SetBool("On", true);
         yield return new WaitForSeconds(2.5f);
         isActive = false;
+        animator.SetBool("On", false);
     }
 
 }

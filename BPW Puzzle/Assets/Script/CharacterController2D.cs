@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 //I've had to rewrite it somewhat, and i have to still go back and refactor it to make it look more proffesional
 public class CharacterController2D : MonoBehaviour
 {
-    [SerializeField]private float speed = 1.5f;
+    [SerializeField]private float speed = 0.1f;
     [SerializeField]private GameObject spawnObject;
 
     private Rigidbody2D rigidbody2D;
@@ -52,13 +52,11 @@ public class CharacterController2D : MonoBehaviour
 
 
         Vector3 movement = new Vector3(horizontal, 0, vertical);
-        Vector3 directionToMouse = (mouse - transform.position).normalized;
-
         // Move the player towards or away from the mouse
-        movement = directionToMouse * vertical;
+        movement = transform.up * vertical;
 
         // Normalize the movement vector and make it proportional to the speed per second
-        movement = movement.normalized * speed * Time.deltaTime;
+        movement = movement.normalized * (speed * Time.deltaTime);
 
         // Move the player
         rigidbody2D.MovePosition(transform.position + movement);
