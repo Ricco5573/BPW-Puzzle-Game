@@ -16,11 +16,6 @@ public class CanvasManager : MonoBehaviour
     private RawImage back;
     private string levelName;
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public void StartFade(bool fadeIn, string name)
     {
