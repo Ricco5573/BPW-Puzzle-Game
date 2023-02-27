@@ -34,6 +34,11 @@ public class AIFollower : MonoBehaviour
         length = playerData.Count;
     }
 
+    public void SetStart(int listNum)
+    {
+        start = listNum;
+    }
+
     void Reset()
     {
         //This function will reset the clone back to its starting position, restarting its movement
@@ -67,12 +72,11 @@ public class AIFollower : MonoBehaviour
             circle.enabled = false;
         }
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+
+    public void CaughtPlayer()
     {
-        if(collision.gameObject.tag == "Player")
-        {
-            //If the clone spots the player, that will create a time paradox, and restart the level
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
+        //If the clone spots the player, that will create a time paradox, and restart the level
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+ 
 }

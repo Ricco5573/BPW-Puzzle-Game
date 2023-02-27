@@ -11,44 +11,69 @@ public class CanvasManager : MonoBehaviour
     [SerializeField]
     private Canvas canvas;
     [SerializeField]
-    private TextMeshProUGUI text;
-    [SerializeField]
     private RawImage back;
+    [SerializeField] private RawImage flash;
+    [SerializeField]
     private string levelName;
 
-
-    public void StartFade(bool fadeIn, string name)
+    public void StartFade(bool fadeIn)
     {
-        levelName = name;
+
         StartCoroutine(Fade(fadeIn));
+    }
+    public void StartFlash()
+    {
+        StartCoroutine(Flash());
     }
     private IEnumerator Fade(bool fadeIn)
     {
         if (fadeIn)
         {
-            text.text = levelName;
+
             yield return new WaitForSeconds(2);
             for (int i = 0; i <= 10; i++)
             {
 
-                text.alpha -= 0.1f;
                 back.CrossFadeAlpha(0, 1, false);
                 yield return new WaitForEndOfFrame();
 
             }
+            back.enabled = false;
         }
         else
         {
+            back.enabled = true;
             for (int i = 0; i <= 10; i++)
             {
-                text.text = levelName;
-                text.alpha += 0.1f;
+
                 back.CrossFadeAlpha(1, 1, false);
                 yield return new WaitForEndOfFrame();
 
             }
+           
             yield return new WaitForSeconds(2);
             SceneManager.LoadScene(levelName);
+        }
+    }
+    private IEnumerator Flash()
+    {   //the rawimage alpha thing i got from here. (why cant it just work normally?)
+        //https://answers.unity.com/questions/1420434/change-image-alpha-of-a-raw-image-component-stored.html
+        float alpha = 1f;
+        Color currentcolour = flash.color;
+        currentcolour.a = alpha;
+        flash.color = currentcolour;
+        yield return new WaitForSeconds(0.1f);
+
+        for (int i = 0; i <= 10; i++)
+        {
+            Debug.Log(flash.color.a); 
+            currentcolour = flash.color;
+            currentcolour.a = alpha;
+            flash.color = currentcolour;
+            alpha -= 0.1f;
+            yield return new WaitForEndOfFrame();
+
+
         }
     }
 }

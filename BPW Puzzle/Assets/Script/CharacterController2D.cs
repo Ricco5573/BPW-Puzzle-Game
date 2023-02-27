@@ -9,13 +9,19 @@ using UnityEngine.SceneManagement;
 //I've had to rewrite it somewhat, and i have to still go back and refactor it to make it look more proffesional
 public class CharacterController2D : MonoBehaviour
 {
-    [SerializeField]private float speed = 0.1f;
-    [SerializeField]private GameObject spawnObject;
-
+    [SerializeField]
+    private float speed = 0.1f;
+    [SerializeField]
+    private GameObject spawnObject;
+    [SerializeField]
+    private List<PlayerData> playerData = new List<PlayerData>();
+    [SerializeField]
+    private CanvasManager canva;
     private Rigidbody2D rigidbody2D;
-   [SerializeField] private List<PlayerData> playerData = new List<PlayerData>();
+
+
     private List<GameObject> Clones = new List<GameObject>();
-    private int startAt = 0;
+    private int startAt = 60;
     private int frameCounter = 0;
 
 
@@ -78,9 +84,10 @@ public class CharacterController2D : MonoBehaviour
     {
         //so turns out, This method runs the code BEFORE START(). Which is interesting, but by god its annoying
         //Creates a clone, and sends all the accumulated playerData to it, as well as an int for it to know where in the struct to start
-        GameObject newObject = Instantiate(spawnObject, new Vector2(0,0), Quaternion.identity);
+        canva.StartFlash();
+        GameObject newObject = Instantiate(spawnObject, new Vector2(0,-12), Quaternion.identity);
         newObject.SendMessage("ReceiveData", new PlayerData(playerData));
-        newObject.SendMessage("Setstart", startAt);
+        newObject.SendMessage("SetStart", startAt); 
         Debug.Log("Send message");
         Clones.Add(newObject);
         foreach(GameObject clone in Clones)

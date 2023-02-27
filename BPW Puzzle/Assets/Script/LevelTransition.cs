@@ -7,21 +7,17 @@ using UnityEngine.UI;
 public class LevelTransition : MonoBehaviour
 {
     [SerializeField]
-    private string levelName;
-    [SerializeField]
-    private string nextLevelName;
-    [SerializeField]
     private CanvasManager canvas;
     void Start()
     {
-        canvas.StartFade(true, levelName);
+        canvas.StartFade(true); 
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Player")
         {
-            canvas.StartFade(false, nextLevelName);
+            canvas.StartFade(false);
         }
     }
 }
