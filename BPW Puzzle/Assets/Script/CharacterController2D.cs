@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ public class CharacterController2D : MonoBehaviour
     [SerializeField]
     private CanvasManager canva;
     private Rigidbody2D rigidbody2D;
-
+    private Animator anim;
 
     private List<GameObject> Clones = new List<GameObject>();
     private int startAt = 60;
@@ -29,6 +30,7 @@ public class CharacterController2D : MonoBehaviour
     void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     void Update()
@@ -55,13 +57,38 @@ public class CharacterController2D : MonoBehaviour
         // https://answers.unity.com/questions/607618/unity2d-make-object-face-mouse.html Source
         Vector3 mouseScreen = Input.mousePosition;
         Vector3 mouse = Camera.main.ScreenToWorldPoint(mouseScreen);
-        this.gameObject.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(mouse.y - transform.position.y, mouse.x - transform.position.x) * Mathf.Rad2Deg - 90);
+        Quaternion toMouse = Quaternion.Euler(0, 0, Mathf.Atan2(mouse.y - transform.position.y, mouse.x - transform.position.x) * Mathf.Rad2Deg - 90);
+        bool moving;
+        //this.gameObject.transform.rotation = toMouse;
+        Vector3 directionToMouse = mouse - transform.position;
 
+        float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
+        angle = (angle + 360) % 360; // convert angle to 0-360 range
+
+        Debug.Log("Angle to mouse: " + angle);
         float vertical = Input.GetAxis("Vertical");
-        float horizontal = Input.GetAxis("Horizontal"); ;
+        float horizontal = Input.GetAxis("Horizontal");
+        toMouse.z = toMouse.z * Mathf.Rad2Deg;
+        if (angle >= 301 || angle <= 60)
+            anim.SetInteger("Dir", 1);
+        else if (angle >= 61 && angle <= 120)
+            anim.SetInteger("Dir", 0);
+        else if (angle >= 121 && angle <= 240)
+            anim.SetInteger("Dir", 3);
+        else if (angle >= 241 && angle <= 300)
+            anim.SetInteger("Dir", 2);
+        
+        if(vertical == 0 && horizontal == 0)
+        {
+            moving = false;
+        }
+        else
+        {
+            moving = true; 
+        }
 
-
-        Vector3 movement = new Vector3(horizontal, 0, vertical);
+            Vector3 movement = new Vector3(horizontal, 0, vertical);
+        anim.SetBool("Move", moving);
         // Move the player towards or away from the mouse
         movement = transform.up * vertical;
 
@@ -102,7 +129,7 @@ public class CharacterController2D : MonoBehaviour
 
 
 //This struct keeps track of the player position and rotation, and inside of it has a list of itself to keep track of the data
-// of every frame.
+//of every frame.
 public struct PlayerData
 {
     public Vector2 position;

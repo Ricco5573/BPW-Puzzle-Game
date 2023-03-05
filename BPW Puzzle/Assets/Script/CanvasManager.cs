@@ -27,6 +27,7 @@ public class CanvasManager : MonoBehaviour
     }
     private IEnumerator Fade(bool fadeIn)
     {
+        back.enabled = true;
         if (fadeIn)
         {
 
@@ -42,7 +43,7 @@ public class CanvasManager : MonoBehaviour
         }
         else
         {
-            back.enabled = true;
+
             for (int i = 0; i <= 10; i++)
             {
 
