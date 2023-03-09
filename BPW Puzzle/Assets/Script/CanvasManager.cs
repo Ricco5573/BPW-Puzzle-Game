@@ -67,7 +67,6 @@ public class CanvasManager : MonoBehaviour
 
         for (int i = 0; i <= 10; i++)
         {
-            Debug.Log(flash.color.a); 
             currentcolour = flash.color;
             currentcolour.a = alpha;
             flash.color = currentcolour;

@@ -59,9 +59,9 @@ public class AIFollower : MonoBehaviour
 
             PlayerData currentData = playerData[counter];
             transform.position = currentData.position;
-            transform.eulerAngles = new Vector3(0, 0, currentData.rotation);
+            transform.eulerAngles = new Vector3(0, 0, Mathf.Clamp(currentData.rotation, 0, 360));
             counter++;
-
+            Debug.Log(currentData.rotation);
         }
         if (counter >= length)
         {

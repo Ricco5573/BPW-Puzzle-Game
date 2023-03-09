@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 //Written by chatGPT
 //I've had to rewrite it somewhat, and i have to still go back and refactor it to make it look more proffesional
@@ -20,7 +21,7 @@ public class CharacterController2D : MonoBehaviour
     private CanvasManager canva;
     private Rigidbody2D rigidbody2D;
     private Animator anim;
-
+    private Quaternion toMouse;
     private List<GameObject> Clones = new List<GameObject>();
     private int startAt = 60;
     private int frameCounter = 0;
@@ -57,18 +58,16 @@ public class CharacterController2D : MonoBehaviour
         // https://answers.unity.com/questions/607618/unity2d-make-object-face-mouse.html Source
         Vector3 mouseScreen = Input.mousePosition;
         Vector3 mouse = Camera.main.ScreenToWorldPoint(mouseScreen);
-        Quaternion toMouse = Quaternion.Euler(0, 0, Mathf.Atan2(mouse.y - transform.position.y, mouse.x - transform.position.x) * Mathf.Rad2Deg - 90);
+        toMouse = Quaternion.Euler(0, 0, Mathf.Atan2(mouse.y - transform.position.y, mouse.x - transform.position.x) * Mathf.Rad2Deg - 90);
         bool moving;
         //this.gameObject.transform.rotation = toMouse;
-        Vector3 directionToMouse = mouse - transform.position;
+        Vector3 directionToMouse = (mouse - transform.position).normalized;
 
         float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
         angle = (angle + 360) % 360; // convert angle to 0-360 range
-
-        Debug.Log("Angle to mouse: " + angle);
         float vertical = Input.GetAxis("Vertical");
         float horizontal = Input.GetAxis("Horizontal");
-        toMouse.z = toMouse.z * Mathf.Rad2Deg;
+
         if (angle >= 301 || angle <= 60)
             anim.SetInteger("Dir", 1);
         else if (angle >= 61 && angle <= 120)
@@ -87,22 +86,26 @@ public class CharacterController2D : MonoBehaviour
             moving = true; 
         }
 
-            Vector3 movement = new Vector3(horizontal, 0, vertical);
+
         anim.SetBool("Move", moving);
-        // Move the player towards or away from the mouse
-        movement = transform.up * vertical;
-
-        // Normalize the movement vector and make it proportional to the speed per second
-        movement = movement * speed * Time.deltaTime;
-
-        // Move the player
-        rigidbody2D.MovePosition(transform.position + movement);
+        if (Input.GetKey(KeyCode.W))
+        {
+            rigidbody2D.velocity = directionToMouse * speed;
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            rigidbody2D.velocity = -directionToMouse * speed;
+        }
+        else
+        {
+            rigidbody2D.velocity = Vector2.zero;
+        }
     }
 
     void TrackPlayer()
     {
         //Creates a new Data point for the playerData struct, that will later be send to the Clones.
-        PlayerData data = new PlayerData(transform.position, transform.eulerAngles.z, Time.time);
+        PlayerData data = new PlayerData(transform.position, toMouse.eulerAngles.z, Time.time);
         playerData.Add(data);
 
     }
@@ -115,7 +118,6 @@ public class CharacterController2D : MonoBehaviour
         GameObject newObject = Instantiate(spawnObject, new Vector2(0,-12), Quaternion.identity);
         newObject.SendMessage("ReceiveData", new PlayerData(playerData));
         newObject.SendMessage("SetStart", startAt); 
-        Debug.Log("Send message");
         Clones.Add(newObject);
         foreach(GameObject clone in Clones)
         {
