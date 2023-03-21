@@ -60,6 +60,7 @@ public class AIFollower : MonoBehaviour
         {
 
             PlayerData currentData = playerData[counter];
+            int direction = currentData.direction;
             transform.position = currentData.position;
             float rotation = Mathf.Round(currentData.rotation);
             fov.transform.eulerAngles = new Vector3(0, 0, Mathf.Clamp(rotation, 0, 360));
@@ -72,30 +73,27 @@ public class AIFollower : MonoBehaviour
             else
                 anim.SetBool("Move", false);
             float angle = rotation;
-            angle = angle * Mathf.Rad2Deg;
-            angle = (angle + 360) % 360;
-            //Debug.Log(angle);
-            if (angle >= 301 || angle <= 60)
+
+            Debug.Log(angle);
+            if (direction == 1)
             {
                 anim.SetInteger("Dir", 1);
-                Debug.Log("1");
-
+                this.gameObject.transform.rotation = new Quaternion(0, 180, 0, 0);
             }
-            else if (angle >= 61 && angle <= 120)
+            else if (direction == 0)
             {
                 anim.SetInteger("Dir", 0);
-                Debug.Log("0");
-
+                this.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
             }
-            else if (angle >= 121 && angle <= 240)
+            else if (direction == 3)
             {
                 anim.SetInteger("Dir", 3);
-                Debug.Log("3");
+                this.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
             }
-            else if (angle >= 241 && angle <= 300)
+            else if (direction == 2)
             {
                 anim.SetInteger("Dir", 2);
-                Debug.Log("2");
+                this.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
 
             }
             //Debug.Log(currentData.rotation);

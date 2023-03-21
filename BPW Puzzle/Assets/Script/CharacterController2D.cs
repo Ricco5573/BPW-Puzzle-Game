@@ -25,7 +25,7 @@ public class CharacterController2D : MonoBehaviour
     private List<GameObject> Clones = new List<GameObject>();
     private int startAt = 60;
     private int frameCounter = 0;
-
+    private int dir;
 
 
     void Start()
@@ -72,22 +72,25 @@ public class CharacterController2D : MonoBehaviour
         {
             anim.SetInteger("Dir", 1);
             this.gameObject.transform.rotation = new Quaternion(0, 180, 0, 0);
+            dir = 1;
         }
         else if (angle >= 61 && angle <= 120)
         {
             anim.SetInteger("Dir", 0);
             this.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
+            dir = 0;
         }
         else if (angle >= 121 && angle <= 240)
         {
             anim.SetInteger("Dir", 3);
             this.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
+            dir = 3;
         }
         else if (angle >= 241 && angle <= 300)
         {
             anim.SetInteger("Dir", 2);
             this.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
-
+            dir = 2;
         }
 
         if (vertical == 0 && horizontal == 0)
@@ -118,7 +121,7 @@ public class CharacterController2D : MonoBehaviour
     void TrackPlayer()
     {
         //Creates a new Data point for the playerData struct, that will later be send to the Clones.
-        PlayerData data = new PlayerData(transform.position, toMouse.eulerAngles.z, Time.time);
+        PlayerData data = new PlayerData(transform.position, toMouse.eulerAngles.z, dir);
         playerData.Add(data);
 
     }
@@ -149,13 +152,14 @@ public struct PlayerData
 {
     public Vector2 position;
     public float rotation;
-
+    public int direction;
     public List<PlayerData> pD;
 
-    public PlayerData(Vector2 position, float rotation, float time)
+    public PlayerData(Vector2 position, float rotation, int direction)
     {
         this.position = position;
         this.rotation = rotation;
+        this.direction = direction;
         this.pD = new List<PlayerData>();
 
     }
@@ -164,6 +168,7 @@ public struct PlayerData
     {
         this.position = Vector2.zero;
         this.rotation = 0.0f;
+        this.direction = 0;
         this.pD = playerData;
 
     }
