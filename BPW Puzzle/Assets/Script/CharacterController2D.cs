@@ -69,15 +69,28 @@ public class CharacterController2D : MonoBehaviour
         float horizontal = Input.GetAxis("Horizontal");
 
         if (angle >= 301 || angle <= 60)
+        {
             anim.SetInteger("Dir", 1);
+            this.gameObject.transform.rotation = new Quaternion(0, 180, 0, 0);
+        }
         else if (angle >= 61 && angle <= 120)
+        {
             anim.SetInteger("Dir", 0);
+            this.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
+        }
         else if (angle >= 121 && angle <= 240)
+        {
             anim.SetInteger("Dir", 3);
+            this.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
+        }
         else if (angle >= 241 && angle <= 300)
+        {
             anim.SetInteger("Dir", 2);
-        
-        if(vertical == 0 && horizontal == 0)
+            this.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
+
+        }
+
+        if (vertical == 0 && horizontal == 0)
         {
             moving = false;
         }
