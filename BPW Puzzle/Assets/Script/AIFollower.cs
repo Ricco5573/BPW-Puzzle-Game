@@ -18,6 +18,7 @@ public class AIFollower : MonoBehaviour
     [SerializeField] private SpriteRenderer diamond;
     [SerializeField] private SpriteRenderer circle;
     [SerializeField]private BoxCollider2D box;
+    [SerializeField]private PolygonCollider2D poly;
     [SerializeField] private GameObject fov;
     private Animator anim;
     private Vector2 lastPos;
@@ -26,6 +27,7 @@ public class AIFollower : MonoBehaviour
         sprite = this.gameObject.GetComponent<SpriteRenderer>();
         box = this.gameObject.GetComponent<BoxCollider2D>();
         anim = this.gameObject.GetComponent<Animator>();
+
     }
     void ReceiveData(PlayerData data)
     {
@@ -50,6 +52,7 @@ public class AIFollower : MonoBehaviour
         box.enabled = true;
         diamond.enabled = true;
         circle.enabled = true;
+        poly.enabled = true;
     }
 
     void Update()
@@ -106,6 +109,7 @@ public class AIFollower : MonoBehaviour
             box.enabled = false;
             diamond.enabled = false;
             circle.enabled = false;
+            poly.enabled = false;
         }
     }
 

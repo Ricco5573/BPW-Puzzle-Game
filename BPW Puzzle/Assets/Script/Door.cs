@@ -11,15 +11,19 @@ public class Door : MonoBehaviour
     private SpriteRenderer sR;
     private Animator anim;
     private BoxCollider2D bC;
+    private AudioSource aS;
+    private bool on;
 
     private void Start()
     {
         bC = GetComponent<BoxCollider2D>();
         anim = GetComponent<Animator>();
         sR = GetComponent<SpriteRenderer>();
+        aS = GetComponent<AudioSource>();
     }
     void Update()
     {
+        
         foreach(Button button in buttons) {
 
             if (button.GetActive())
@@ -27,9 +31,15 @@ public class Door : MonoBehaviour
 
                 amountOn++;
             }
-            if(amountOn == buttons.Count)
+            if(amountOn == buttons.Count && !on)
             {
                 StartCoroutine(Open());
+                on = true;
+                aS.PlayOneShot(aS.clip);
+            }
+            else if (amountOn != buttons.Count)
+            {
+                on = false;
             }
         }
         amountOn = 0;
@@ -39,7 +49,7 @@ public class Door : MonoBehaviour
     {
         bC.enabled = false;
         anim.SetBool("Open", true);
-        yield return new WaitForSecondsRealtime(3);
+        yield return new WaitForSecondsRealtime(5);
         anim.SetBool("Open", false);
         bC.enabled = true;
     }

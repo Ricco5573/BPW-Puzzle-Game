@@ -26,12 +26,13 @@ public class CharacterController2D : MonoBehaviour
     private int startAt = 60;
     private int frameCounter = 0;
     private int dir;
-
+    private AudioSource aS;
 
     void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        aS= GetComponent<AudioSource>();
     }
 
     void Update()
@@ -41,6 +42,7 @@ public class CharacterController2D : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             SpawnObject();
+            aS.PlayOneShot(aS.clip);
         }
         if(Input.GetKeyDown(KeyCode.D))
         {

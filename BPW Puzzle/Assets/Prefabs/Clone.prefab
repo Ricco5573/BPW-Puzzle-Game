@@ -434,23 +434,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.28083062, y: 0.31079602}
   m_EdgeRadius: 0
---- !u!114 &451608512594248388
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 218051975195286455}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f1a064d633704a408460cabbe083156, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sprite: {fileID: 218051975195286448}
-  diamond: {fileID: 429532554735065213}
-  circle: {fileID: 4896156904673137269}
-  box: {fileID: 432141348152918977}
-  fov: {fileID: 1633877849175354764}
 --- !u!95 &4702712738252342709
 Animator:
   serializedVersion: 4
@@ -471,3 +454,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &451608512594248388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218051975195286455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f1a064d633704a408460cabbe083156, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 218051975195286448}
+  diamond: {fileID: 429532554735065213}
+  circle: {fileID: 4896156904673137269}
+  box: {fileID: 432141348152918977}
+  poly: {fileID: 2918240571126401382}
+  fov: {fileID: 1633877849175354764}
